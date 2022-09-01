@@ -16,7 +16,7 @@ public class SocialNode {
     private int reputationValue;
     public int messageNumber;
 
-    private Application webApplication;
+    private Application web3Application;
 
     public SocialNode() {
 
@@ -27,13 +27,14 @@ public class SocialNode {
 //    }
 
     public String getContractAddress() throws Exception {
-        Class<?> aClass = Class.forName("com.example.socialnet.web3.Application");
-        Method method = aClass.getDeclaredMethod("run",null);
-//        设置字段可访问，即暴力反射
-        method.setAccessible(true);
-//        可以给私有方法传参数
-        Object obj = method.invoke(aClass.newInstance());
-        System.out.println(obj);
+//        通过反射调用方法
+//        Class<?> aClass = Class.forName("com.example.socialnet.web3.Application");
+//        Method method = aClass.getDeclaredMethod("run",null);
+////        设置字段可访问，即暴力反射
+//        method.setAccessible(true);
+////        可以给私有方法传参数
+//        Object obj = method.invoke(aClass.newInstance());
+//        System.out.println(obj);
 
         return contractAddress;
     }
