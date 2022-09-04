@@ -3,6 +3,7 @@ package com.example.socialnet.thread;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.socialnet.utils.RabbitMqUtils;
+import com.example.socialnet.web3.Web3Application;
 import com.rabbitmq.client.Channel;
 import lombok.SneakyThrows;
 
@@ -12,6 +13,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
 
+import static com.example.socialnet.Constants.QUEUE_NAME;
+
 /**
  * @description TODO
  * @authors XiaoYu
@@ -19,10 +22,11 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 class NumberThread implements Runnable {
 
-    public static final String QUEUE_NAME = "hello";
+
     private int number = 0;
     private Channel channel;
-//    public  SendMessage sendMessage;
+    private Web3Application web3Application;
+
 
     //    1.实例化锁
     private ReentrantLock lock = new ReentrantLock();

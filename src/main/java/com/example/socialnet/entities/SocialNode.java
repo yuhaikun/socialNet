@@ -1,8 +1,6 @@
 package com.example.socialnet.entities;
 
-import com.example.socialnet.web3.Application;
-
-import java.lang.reflect.Method;
+import com.example.socialnet.web3.Web3Application;
 
 /**
  * @description TODO
@@ -16,12 +14,14 @@ public class SocialNode {
     private int reputationValue;
     public int messageNumber;
 
-    private Application web3Application;
+    private Web3Application web3Application;
 
     public SocialNode() {
 
     }
-
+    public SocialNode(Web3Application web3Application) {
+        this.web3Application = web3Application;
+    }
 //    public SocialNode(Application application) {
 //        this.webApplication = application;
 //    }

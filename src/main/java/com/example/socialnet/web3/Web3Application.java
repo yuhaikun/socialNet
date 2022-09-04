@@ -1,54 +1,49 @@
 package com.example.socialnet.web3;
 
 import com.example.socialnet.contract.generated.java.org.web3j.model.Storage;
-import org.web3j.abi.datatypes.Address;
 import org.web3j.crypto.Credentials;
 import org.web3j.crypto.WalletUtils;
 import org.web3j.protocol.Web3j;
-import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.gas.ContractGasProvider;
 
 import java.math.BigInteger;
+
+import static com.example.socialnet.Constants.contractAddress;
 
 /**
  * @description TODO
  * @authors XiaoYu
  * @date 2022/8/29 9:09
  */
-public class Application {
+public class Web3Application {
 
-    public String password;
-    public String walletSource;
-    public String contractAddress;
+    private String password;
+    private String walletSource;
+
 
     // GAS价格
     public static BigInteger GAS_PRICE = BigInteger.valueOf(20_000_000_000L);
     // GAS上限
     public static BigInteger GAS_LIMIT = BigInteger.valueOf(4_300_000L);
 
-    public Application(String password, String walletSource, String contractAddress) {
+    /**
+     * 构造函数在传递参数的同时将合约初始化
+     * @param password
+     * @param walletSource
+     */
+    public Web3Application(String password, String walletSource) throws Exception {
         this.password = password;
         this.walletSource = walletSource;
-        this.contractAddress = contractAddress;
-    }
 
-
-    //    private static String contractAddress = "0x0B00E62eDc27BA04e133C499AadACe9CB6590277";
-
-    public static void main(String[] args) throws Exception {
-        String passwd = "123456";
-        String walletSource = "./wallet/UTC--2022-08-29T02-04-28.615000000Z--3e199356cf67fd0a4df5fd5ce74ad3ef0d8bc30b.json";
-        String contractAddress = "0x0B00E62eDc27BA04e133C499AadACe9CB6590277";
-        new Application(passwd,walletSource,contractAddress).run();
-    }
-
-    public void run() throws Exception {
-//        创建一个web3实例来连接网络中的远端节点
+        //        创建一个web3实例来连接网络中的远端节点
         Web3j web3 = Web3j.build(new HttpService("http://localhost:9545/"));
 
 //        File file = new File("./wallet");
-//        WalletUtils.generateNewWalletFile("123456", file, true);
+//
+//        for (int i = 0; i < 7; i++) {
+//            WalletUtils.generateNewWalletFile("123456", file, true);
+//        }
 
         Credentials credentials = WalletUtils.loadCredentials(password,walletSource);
 
@@ -81,7 +76,27 @@ public class Application {
         BigInteger retrieve = contract.retrieve().send();
 
         System.out.println("常量值为：" + retrieve);
-
     }
+
+
+    //    private static String contractAddress = "0x0B00E62eDc27BA04e133C499AadACe9CB6590277";
+
+    public static void main(String[] args) throws Exception {
+        String passwd = "123456";
+//        String walletSource = "./wallet/account_1.json";
+        String walletSource = "./wallet/account_1.json";
+        new Web3Application(passwd,walletSource);
+    }
+
+    public int getMemberReputationValue(String memberAddress) {
+
+        return 2;
+    }
+
+    public int getMemberMessageNumber(String memberAddress) {
+
+        return 1;
+    }
+
 
 }
