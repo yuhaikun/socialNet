@@ -1327,10 +1327,10 @@ contract usingProvable {
     }
 
     function safeMemoryCleaner() internal pure {
-        assembly {
-            let fmem := mload(0x40)
-            codecopy(fmem, codesize(), sub(msize(), fmem))
-        }
+//        assembly {
+//            let fmem := mload(0x40)
+//            codecopy(fmem, codesize(), sub(msize(), fmem))
+//        }
     }
 }
 // </provableAPI>

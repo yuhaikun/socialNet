@@ -51,6 +51,10 @@ public class Storage extends Contract {
         super(BINARY, contractAddress, web3j, transactionManager, contractGasProvider);
     }
 
+//    public Storage() {
+//        super();
+//    }
+
     public RemoteFunctionCall<BigInteger> retrieve() {
         final Function function = new Function(FUNC_RETRIEVE, 
                 Arrays.<Type>asList(), 

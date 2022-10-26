@@ -33,7 +33,7 @@ contract GetMessage is usingProvable {
     uint8 dataTypeValue;
     // 验证查询ID是否被使用过了，确保每个查询相应只处理一次，并有助于避免滥用智能合约逻辑
     mapping(bytes32 => bool) validIds;
-    
+
     Message public newMessage;
 
     // 社交网络中一个实体
@@ -66,9 +66,9 @@ contract GetMessage is usingProvable {
         require(members[tempAddress] == false, "the address was registered");
 
         Member memory newMember = Member({
-            memberAddress: tempAddress,
-            numberOfMessage: 0,
-            reputationValue: 100
+        memberAddress: tempAddress,
+        numberOfMessage: 0,
+        reputationValue: 100
         });
 
         indexOfMember[tempAddress] = memberArray.length;
@@ -113,11 +113,11 @@ contract GetMessage is usingProvable {
             addMember(memberAddress);
         }
         Message memory tempMessage = Message({
-            ipfsHash: ipfs,
-            senderAddress: memberAddress,
-            rumorValue: tempRumorValue,
-            emotionValue: tempEmotionValue,
-            changeValue: 0
+        ipfsHash: ipfs,
+        senderAddress: memberAddress,
+        rumorValue: tempRumorValue,
+        emotionValue: tempEmotionValue,
+        changeValue: 0
         });
 
         // 取出实体对应的下标
@@ -140,8 +140,8 @@ contract GetMessage is usingProvable {
     // function getAllMessage(Message memory temp) public{}
 
     function fetchMessageViaProvable(string memory ipfs, string memory dataType)
-        public
-        payable
+    public
+    payable
     {
         // 要求该信息之前没有被存储上链
         require(judgeIpfs[ipfs] == false, "this message has been stored");
@@ -205,9 +205,9 @@ contract GetMessage is usingProvable {
     fallback() external payable {}
 
     function strNewConcat(string memory _a, string memory _b)
-        internal
-        pure
-        returns (string memory)
+    internal
+    pure
+    returns (string memory)
     {
         bytes memory _ba = bytes(_a);
         bytes memory _bb = bytes(_b);
@@ -241,9 +241,9 @@ contract GetMessage is usingProvable {
 
     // 返回一个实体发送的某一条信息
     function getMessage(address memberAddress, uint256 indexMessage)
-        public
-        view
-        returns (Message memory)
+    public
+    view
+    returns (Message memory)
     {
         // 取出实体对应的下标
         uint256 memberIndex = indexOfMember[memberAddress];
@@ -258,7 +258,7 @@ contract GetMessage is usingProvable {
     function changeReputationValue(uint memberIndex,uint messageIndex,uint rumorValue,uint emotionValue) internal{
 
         if (rumorValue >= 5000) {
-        
+
             memberArray[memberIndex].messageOfMember[messageIndex].changeValue = -1 * int(emotionValue) / 1000;
         }else{
             memberArray[memberIndex].messageOfMember[messageIndex].changeValue = int(emotionValue) / 1000;
@@ -266,5 +266,13 @@ contract GetMessage is usingProvable {
 
         // memberArray[memberIndex].messageOfMember[messageIndex].changeValue = 
         memberArray[memberIndex].reputationValue += memberArray[memberIndex].messageOfMember[messageIndex].changeValue;
+    }
+
+
+    function getMemberReputationValue(address memberAddress) public view returns (int256){
+
+        uint256 memberIndex = indexOfMember[memberAddress];
+
+        return memberArray[memberIndex].reputationValue;
     }
 }
