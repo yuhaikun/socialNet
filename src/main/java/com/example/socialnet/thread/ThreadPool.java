@@ -230,6 +230,8 @@ class NumberThread implements Runnable {
                     //                String tempString = sendMessage.getMessage(1);
                     String s = readFile(JSONFILE_1, number);
 
+
+
                     //      发送的信息进行RSA加密
                     String encryptString = rsaUtils.encrypt(s);
                     channel.basicPublish("", QUEUE_NAME, null, encryptString.getBytes(StandardCharsets.UTF_8));

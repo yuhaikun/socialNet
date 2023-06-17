@@ -9,6 +9,7 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
@@ -86,8 +87,46 @@ public class RsaUtils {
         //RSA加密
         Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.ENCRYPT_MODE, pubKey);
-        String outStr = Base64.getEncoder().encodeToString(cipher.doFinal(str.getBytes("UTF-8")));
+
+        //当长度过长的时候，需要分割后加密117个字节
+        byte[] resultBytes = getMaxResultEncrypt(str,cipher);
+
+
+        // String outStr = Base64.getEncoder().encodeToString(cipher.doFinal(str.getBytes("UTF-8")));
+
+        String outStr = Base64.getEncoder().encodeToString(resultBytes);
         return outStr;
+    }
+
+    /**
+     * 长度超过117字节，需要分组加密
+     * @param str
+     * @param cipher
+     * @return
+     * @throws Exception
+     */
+    private static byte[] getMaxResultEncrypt(String str,Cipher cipher) throws Exception {
+        byte[] inputArray = str.getBytes();
+        int inputLength = inputArray.length;
+        System.out.println("inputLength = " + inputLength);
+    //  最大加密字节数，超过最大字节数需要分组加密
+        int MAX_ENCRYPT_BLOCK = 117;
+    //   标识
+        int offSet = 0;
+        byte[] resultBytes = {};
+        byte[] cache = {};
+        while (inputLength - offSet > 0) {
+            if (inputLength - offSet > MAX_ENCRYPT_BLOCK) {
+                cache = cipher.doFinal(inputArray,offSet,MAX_ENCRYPT_BLOCK);
+                offSet += MAX_ENCRYPT_BLOCK;
+            } else {
+                cache = cipher.doFinal(inputArray,offSet,inputLength - offSet);
+                offSet = inputLength;
+            }
+            resultBytes = Arrays.copyOf(resultBytes,resultBytes.length + cache.length);
+            System.arraycopy(cache,0,resultBytes,resultBytes.length-cache.length,cache.length);
+        }
+        return resultBytes;
     }
 
     /**
